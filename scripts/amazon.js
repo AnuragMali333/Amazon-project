@@ -74,7 +74,7 @@ function updateCartquantity(){
 document.querySelectorAll('.js-add-to-cart')
  .forEach((button)=>{
   button.addEventListener('click',()=>{
-    const productId=button.dataset.productId;
+    const productId=button.dataset.productId;// this way we can associate a identifier with a button and later use it.
     addToCart(productId);
     updateCartquantity();
   });
