@@ -46,7 +46,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -74,7 +74,7 @@ function updateCartquantity(){
 document.querySelectorAll('.js-add-to-cart')
  .forEach((button)=>{
   button.addEventListener('click',()=>{
-    const productId=button.dataset.productId;// this way we can associate a identifier with a button and later use it.
+    const {productId}=button.dataset;// this way we can associate a identifier with a button and later use it.
     addToCart(productId);
     updateCartquantity();
   });
