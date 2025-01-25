@@ -68,7 +68,7 @@ function updateCartquantity(){
 
 updateCartquantity();
 
-document.querySelectorAll('.js-add-to-cart')
+document.querySelectorAll('.js-add-to-cart')// makes all add to cart buttons interactive
  .forEach((button)=>{
   button.addEventListener('click',()=>{
     const {productId}=button.dataset;// this way we can associate a identifier with a button and later use it.

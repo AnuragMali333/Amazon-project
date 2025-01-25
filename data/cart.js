@@ -19,7 +19,7 @@ const addedMessageTimeouts = {};
 export function addToCart(productId) {
   let matchingItem;
 
-  cart.forEach((cartItem) => {
+  cart.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
     if (productId === cartItem.productId) {
       matchingItem = cartItem;
     }
@@ -31,10 +31,10 @@ export function addToCart(productId) {
 
   const quantity = Number(quantitySelector.value);
   if (matchingItem) {
-    matchingItem.quantity += quantity;
+    matchingItem.quantity += quantity; //If matching product is +nt increase its quantity.
   }
   else {
-    cart.push({
+    cart.push({ //else push new product to cart
       productId,
       quantity
     });
@@ -43,7 +43,7 @@ export function addToCart(productId) {
     `.js-added-to-cart-${productId}`
   );
 
-  addedMessage.classList.add('added-to-cart-visible');
+  addedMessage.classList.add('added-to-cart-visible');// make the meassage visible 
 
   // Check if there's a previous timeout for this
   // product. If there is, we should stop it.
@@ -69,7 +69,7 @@ export function removeFromCart(productId) {
   const newCart = [];
 
   cart.forEach((cartItem) => {
-    if (cartItem.productId !== productId) {
+    if (cartItem.productId !== productId) {// All other products with different productID than the one which is to be removed will get added to cart
       newCart.push(cartItem);
     }
   });
@@ -78,26 +78,27 @@ export function removeFromCart(productId) {
   saveTostorage();
 }
 
-export function calculateCartQuantity(){
-  let cartQuantity=0;
+export function calculateCartQuantity() {//sums up all quantities in the cart.
+  let cartQuantity = 0;
 
-  cart.forEach((cartItem)=>{
-    cartQuantity+=cartItem.quantity;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
   });
 
   return cartQuantity;
 }
 
-export function updateQuantity(productId,newQuantity){
+export function updateQuantity(productId, newQuantity) {//updates the quantity of a specific product in the cart.
+
   let matchingItem;
 
-  cart.forEach((cartItem)=>{
-    if(productId===cartItem.productId){
-      matchingItem=cartItem;
-    } 
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
   });
 
-  matchingItem.quantity=newQuantity;
+  matchingItem.quantity = newQuantity;
 
   saveTostorage();
 }
