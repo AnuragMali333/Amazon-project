@@ -116,8 +116,7 @@ export function renderOrderSummary() {
       link.addEventListener('click', () => {
         const productId = link.dataset.productId;//capture product id of cart item whose delete link is clicked
         removeFromCart(productId);// remove item from cart
-        const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        container.remove();// every element in DOM has a .remove() method
+        renderOrderSummary();
         updateCartQuantity();
 
         renderPaymentSummary();
@@ -182,7 +181,7 @@ export function renderOrderSummary() {
           `.js-quantity-label-${productId}`
         );
         quantityLabel.innerHTML = newQuantity;
-
+        renderPaymentSummary();
         updateCartQuantity();
       });
     });
