@@ -46,7 +46,7 @@ export function addToCart(productId) {
     `.js-added-to-cart-${productId}`
   );
 
-  addedMessage.classList.add('added-to-cart-visible');// make the meassage visible 
+  addedMessage.classList.add('added-to-cart-visible'); // make the message visible 
 
   // Check if there's a previous timeout for this
   // product. If there is, we should stop it.
