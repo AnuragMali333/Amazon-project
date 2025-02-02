@@ -4,8 +4,8 @@ import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency} from'../utils/money.js'
 
 export function renderPaymentSummary() {
-  let productPriceCents = 0;
-  let shippingPriceCents = 0;
+  let productPriceCents = 0;// To track total price of all items in cart
+  let shippingPriceCents = 0;// To track total shipping price of all items in cart
 
   cart.forEach((cartItem) => {
     const product = getProduct(cartItem.productId);
@@ -14,9 +14,9 @@ export function renderPaymentSummary() {
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
     shippingPriceCents += deliveryOption.priceCents
   });
-  const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
+  const totalBeforeTaxCents = productPriceCents + shippingPriceCents;// Total of all products before tax
   const taxCents = totalBeforeTaxCents * 0.1;
-  const totalCents = totalBeforeTaxCents + taxCents;
+  const totalCents = totalBeforeTaxCents + taxCents;// total of all products including tax
 
   const paymentSummaryHTML = `
    <div class="payment-summary-title">
@@ -53,7 +53,7 @@ export function renderPaymentSummary() {
           </button>
   `;
 
-  document.querySelector('.js-payment-summary')
+  document.querySelector('.js-payment-summary')// injects generated HTML into payment summary
   .innerHTML=paymentSummaryHTML;
 }
 
