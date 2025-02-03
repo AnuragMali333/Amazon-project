@@ -2,8 +2,9 @@ import { cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDeli
 import { products, getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOption,calculateDeliveryDate } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
 
 export function renderOrderSummary() {
 
@@ -18,11 +19,7 @@ export function renderOrderSummary() {
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);// Find complete deliveryOption using deliveryOptionID
 
-    const today = dayjs();
-    const deliveryDate = today.add(
-      deliveryOption.deliveryDays, 'days'
-    );
-    const dateString = deliveryDate.format('dddd, MMMM D');// Calculate delivery date for each cart item and format it
+    const dateString = calculateDeliveryDate(deliveryOption);//calculates delivery date for the delivery option and formats it
 
     //Generate HTML for each cart-item
     cartSummaryHTMl += `
@@ -74,11 +71,7 @@ export function renderOrderSummary() {
   function deliveryOptionsHTML(matchingProduct, cartItem) {// Generate HTML of delivery options(three) for each cart-Item 
     let html = ''
     deliveryOptions.forEach((deliveryOption) => {
-      const today = dayjs();
-      const deliveryDate = today.add(
-        deliveryOption.deliveryDays, 'days'
-      );
-      const dateString = deliveryDate.format('dddd, MMMM D');
+      const dateString = calculateDeliveryDate(deliveryOption);
       const priceString = deliveryOption.priceCents === 0
         ? 'FREE'
         : `$${formatCurrency(deliveryOption.priceCents)} -`;
@@ -116,9 +109,8 @@ export function renderOrderSummary() {
       link.addEventListener('click', () => {
         const productId = link.dataset.productId;//capture product id of cart item whose delete link is clicked
         removeFromCart(productId);// remove item from cart
+        renderCheckoutHeader();
         renderOrderSummary();
-        updateCartQuantity();
-
         renderPaymentSummary();
       });
     });
@@ -181,8 +173,8 @@ export function renderOrderSummary() {
           `.js-quantity-label-${productId}`
         );
         quantityLabel.innerHTML = newQuantity;
+        renderCheckoutHeader();
         renderPaymentSummary();
-        updateCartQuantity();
       });
     });
 
