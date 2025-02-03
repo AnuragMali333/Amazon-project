@@ -29,15 +29,30 @@ export const deliveryOptions=[{
     If the specified ID is not found, it defaults to the first delivery option.
  */
 
-  export function calculateDeliveryDate(deliveryOption) {
-    const today = dayjs();
-    const deliveryDate = today.add(
-      deliveryOption.deliveryDays,
-      'days'
-    );
-    const dateString = deliveryDate.format(
-      'dddd, MMMM D'
-    );
-  
-    return dateString;
+export function calculateDeliveryDate(deliveryOption) {
+  let today = dayjs();  // Start with today's date
+  let daysRequired = deliveryOption.deliveryDays;
+
+  while (daysRequired > 0) {
+    today = today.add(1, 'day');  // Increment the date
+
+    if (isWeekend(today)) {
+      continue;  // Skip decrementing if it's a weekend
+    } else {
+      daysRequired--;  // Only decrement if it's a weekday
+    }
   }
+
+  const deliveryDate = today;
+  const dateString = deliveryDate.format('dddd, MMMM D');
+
+  return dateString;
+}
+
+
+  
+function isWeekend(date){
+  const dayofWeek=date.format('dddd');
+
+  return dayofWeek === 'Saturday' || dayofWeek ==='Sunday';
+}
