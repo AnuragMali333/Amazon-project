@@ -85,7 +85,7 @@ function Cart(loadFromStorageKey){
       const newCart = [];
     
       this.cartItems.forEach((cartItem) => {
-        if (cartItem.productId !== productId) {// All other products with different productID than the one which is to be removed will get added to cart
+        if (cartItem.productId !== productId) {// All other products with different productID than the one which is to be removed will get added to new cart
           newCart.push(cartItem);
         }
       });
