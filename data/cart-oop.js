@@ -1,5 +1,5 @@
 
-function Cart(loadFromStorageKey){
+function Cart(loadFromStorageKey){// function that creates cart like objects with properties and methods
   const cart = {
     cartItems: undefined,
     addedMessageTimeouts : {},
@@ -25,7 +25,6 @@ function Cart(loadFromStorageKey){
     },
   
      addToCart(productId) {
-      console.log(productId);
       let matchingItem;
     
       this.cartItems.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
@@ -39,8 +38,7 @@ function Cart(loadFromStorageKey){
       );
     
       const quantity = quantitySelector ? Number(quantitySelector.value) : 1;  // Default to 1 if not found
-      console.log(`Quantity for product ${productId}: ${quantity}`);
-      
+
       if (matchingItem) {
         matchingItem.quantity += quantity; //If matching product is +nt increase its quantity.
       }
@@ -117,11 +115,12 @@ function Cart(loadFromStorageKey){
     
       return cartQuantity;
     },
+    
      updateQuantity(productId, newQuantity) {//updates the quantity of a specific product in the cart.
   
       let matchingItem;
     
-      cart.cartItems.forEach((cartItem) => {
+      this.cartItems.forEach((cartItem) => {
         if (productId === cartItem.productId) {
           matchingItem = cartItem;
         }

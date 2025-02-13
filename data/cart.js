@@ -2,10 +2,10 @@ export let cart;
 
 loadFromStorage();
 
- export function loadFromStorage(){
+ export function loadFromStorage(){// loads cart from localStorage
   cart = JSON.parse(localStorage.getItem('cart'));
 
-  if (!cart) {
+  if (!cart) {// If there is no cart in localStorage  we assign default cart
     cart = [{
       productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
       quantity: 2,
@@ -18,13 +18,13 @@ loadFromStorage();
   }
 }
 
-function saveTostorage() {
+function saveToStorage() {// saves cart to LocalStorage
   localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 const addedMessageTimeouts = {};
 
-export function addToCart(productId) {
+export function addToCart(productId) { // adds product to cart 
   let matchingItem;
 
   cart.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
@@ -69,12 +69,12 @@ export function addToCart(productId) {
   // so we can stop it later if we need to.
   addedMessageTimeouts[productId] = timeoutId;
 
-  saveTostorage();
+  saveToStorage();
 }
 
 
 
-export function removeFromCart(productId) {
+export function removeFromCart(productId) {// removes product from cart
   const newCart = [];
 
   cart.forEach((cartItem) => {
@@ -84,7 +84,7 @@ export function removeFromCart(productId) {
   });
 
   cart = newCart;
-  saveTostorage();
+  saveToStorage();
 }
 
 export function calculateCartQuantity() {//sums up all quantities in the cart.
@@ -109,7 +109,7 @@ export function updateQuantity(productId, newQuantity) {//updates the quantity o
 
   matchingItem.quantity = newQuantity;
 
-  saveTostorage();
+  saveToStorage();
 }
 
 export function updateDeliveryOption(productId,deliveryOptionId){
@@ -123,5 +123,5 @@ export function updateDeliveryOption(productId,deliveryOptionId){
 
   matchingItem.deliveryOptionId=deliveryOptionId;
 
-  saveTostorage();
+  saveToStorage();
 }

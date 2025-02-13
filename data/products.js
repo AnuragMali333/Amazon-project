@@ -11,7 +11,7 @@ export function getProduct(productId){
     return matchingProduct;
 }
 
-class Product{
+class Product{ //Creates product objects with its properties and methods
   id;
   image;
   name;
@@ -39,7 +39,7 @@ class Product{
   }
 }
 
-  class Clothing extends Product{
+  class Clothing extends Product{// Syntax for inheritance
     sizeChartLink;
 
     constructor(productDetails){
@@ -61,11 +61,11 @@ class Product{
   console.log(date.toLocaleTimeString());
 */
 
-/*console.log(this);
+/*console.log(this);// undefined 
 
 const object2={
   a:2,
-  b:this.a,
+  b:this.a, //undefined
 };*/
 /*
 function logThis(){

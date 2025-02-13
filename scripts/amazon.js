@@ -63,7 +63,7 @@ products.forEach((product) => {
 document.querySelector('.js-products-grid').innerHTML=productsHTML;
 
 
-function updateCartquantity(){
+function updateCartquantity(){ // Updates cart quantity at top right of page 
   const cartQuantity=calculateCartQuantity();
   document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
 };

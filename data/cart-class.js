@@ -1,6 +1,6 @@
 class Cart{
   cartItems;
-  #localStorageKey;
+  #localStorageKey; // # is used to make a property or method private i.e inaccesible outside object
   addedMessageTimeouts = {};
 
   constructor(localStorageKey){
@@ -10,7 +10,7 @@ class Cart{
   #loadFromStorage () {
     this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
 
-    if (!this.cartItems) {
+    if (!this.cartItems) {//assign default cart if cart is not present in localStorage
       this.cartItems = [{
         productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
         quantity: 2,
@@ -28,7 +28,7 @@ class Cart{
   }
 
   addToCart(productId) {
-    console.log(productId);
+
     let matchingItem;
   
     this.cartItems.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
@@ -42,7 +42,7 @@ class Cart{
     );
   
     const quantity = quantitySelector ? Number(quantitySelector.value) : 1;  // Default to 1 if not found
-    console.log(`Quantity for product ${productId}: ${quantity}`);
+
     
     if (matchingItem) {
       matchingItem.quantity += quantity; //If matching product is +nt increase its quantity.
@@ -97,7 +97,7 @@ class Cart{
     this.saveToStorage();
   }
 
-  updateDeliveryOption(productId, deliveryOptionId) {
+  updateDeliveryOption(productId, newdeliveryOptionId) {
     let matchingItem;
   
     this.cartItems.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
@@ -106,7 +106,7 @@ class Cart{
       }
     });
   
-    matchingItem.deliveryOptionId = deliveryOptionId;
+    matchingItem.deliveryOptionId = newdeliveryOptionId;
   
     this.saveToStorage();
   }
