@@ -1,4 +1,4 @@
-import { cart,calculateCartQuantity } from "../../data/cart.js";
+import {cart} from '../../data/cart-class.js';
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency} from'../utils/money.js'
@@ -7,14 +7,14 @@ export function renderPaymentSummary() {
   let productPriceCents = 0;// To track total price of all items in cart
   let shippingPriceCents = 0;// To track total shipping price of all items in cart
 
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
     const product = getProduct(cartItem.productId);
     productPriceCents += product.priceCents * cartItem.quantity;
 
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
     shippingPriceCents += deliveryOption.priceCents
   });
-  let cartQuantity=calculateCartQuantity();
+  let cartQuantity=cart.calculateCartQuantity();
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;// Total of all products before tax
   const taxCents = totalBeforeTaxCents * 0.1;
   const totalCents = totalBeforeTaxCents + taxCents;// total of all products including tax
