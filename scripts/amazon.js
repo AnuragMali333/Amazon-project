@@ -1,12 +1,14 @@
-import {cart} from '../data/cart-class.js';
-import { products } from '../data/products.js';
+import { cart } from '../data/cart-class.js';
+import { products, loadProducts } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
 
+loadProducts(renderProductsGrid);
 
-let productsHTML = '';
+function renderProductsGrid() {
+  let productsHTML = '';
 
-products.forEach((product) => {
-  productsHTML +=`
+  products.forEach((product) => {
+    productsHTML += `
   <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -58,23 +60,24 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>`;
-});
-
-document.querySelector('.js-products-grid').innerHTML=productsHTML;
-
-
-function updateCartquantity(){ // Updates cart quantity at top right of page 
-  const cartQuantity=cart.calculateCartQuantity();
-  document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
-};
-
-updateCartquantity();
-
-document.querySelectorAll('.js-add-to-cart')// makes all add to cart buttons interactive
- .forEach((button)=>{
-  button.addEventListener('click',()=>{
-    const {productId}=button.dataset;// this way we can associate a identifier with a button and later use it.
-    cart.addToCart(productId);
-    updateCartquantity();
   });
- });
+
+  document.querySelector('.js-products-grid').innerHTML = productsHTML;
+
+
+  function updateCartquantity() { // Updates cart quantity at top right of page 
+    const cartQuantity = cart.calculateCartQuantity();
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+  };
+
+  updateCartquantity();
+
+  document.querySelectorAll('.js-add-to-cart')// makes all add to cart buttons interactive
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        const { productId } = button.dataset;// this way we can associate a identifier with a button and later use it.
+        cart.addToCart(productId);
+        updateCartquantity();
+      });
+    });
+}
