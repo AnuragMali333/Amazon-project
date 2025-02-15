@@ -5,4 +5,3 @@ xhr.addEventListener('load',()=>{// runs when backend is loaded
 
 xhr.open('GET','https://supersimplebackend.dev');//sets up the request. Parameter1= type of req Parameter2=URL
 xhr.send();// send request
-xhr.response
