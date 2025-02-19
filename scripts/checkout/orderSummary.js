@@ -174,6 +174,7 @@ export function renderOrderSummary() {
         );
         quantityLabel.innerHTML = newQuantity;
         renderCheckoutHeader();
+        renderOrderSummary();
         renderPaymentSummary();
       });
     });
