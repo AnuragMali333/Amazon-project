@@ -115,7 +115,7 @@ export function renderOrderSummary() {
       });
     });
 
-  function updateCartQuantity() {
+  function updateCartQuantity() { // updates quantity at top of checkout page
     const cartQuantity = cart.calculateCartQuantity();
 
     document.querySelector('.js-return-to-home-link')
