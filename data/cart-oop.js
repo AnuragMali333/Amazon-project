@@ -136,8 +136,8 @@ function Cart(loadFromStorageKey){// function that creates cart like objects wit
   return cart;
 }
 
-const cart=Cart('cart-oop');
-const buisnessCart=Cart('cart-buisness');
+export const cart=Cart('cart-oop');
+export const buisnessCart=Cart('cart-buisness');
 
 
 cart.loadFromStorage();

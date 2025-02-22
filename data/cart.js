@@ -25,6 +25,9 @@ function saveToStorage() {// saves cart to LocalStorage
 const addedMessageTimeouts = {};
 
 export function addToCart(productId) { // adds product to cart 
+  console.log('Adding product to cart:', productId);
+  console.log('Current Cart:', cart);
+
   let matchingItem;
 
   cart.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
@@ -36,8 +39,8 @@ export function addToCart(productId) { // adds product to cart
   const quantitySelector = document.querySelector(
     `.js-quantity-selector-${productId}`
   );
-
-  const quantity = Number(quantitySelector.value);
+  const quantity = quantitySelector ? Number(quantitySelector.value) : 1; // Default to 1 if not found
+  
   if (matchingItem) {
     matchingItem.quantity += quantity; //If matching product is +nt increase its quantity.
   }
@@ -51,7 +54,7 @@ export function addToCart(productId) { // adds product to cart
   const addedMessage = document.querySelector(
     `.js-added-to-cart-${productId}`
   );
-
+  if(addedMessage){
   addedMessage.classList.add('added-to-cart-visible'); // make the message visible 
 
   // Check if there's a previous timeout for this
@@ -68,7 +71,7 @@ export function addToCart(productId) { // adds product to cart
   // Save the timeoutId for this product
   // so we can stop it later if we need to.
   addedMessageTimeouts[productId] = timeoutId;
-
+}
   saveToStorage();
 }
 
