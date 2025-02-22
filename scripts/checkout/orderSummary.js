@@ -10,6 +10,27 @@ export function renderOrderSummary() {
 
   let cartSummaryHTMl = '';
 
+  if (cart.cartItems.length === 0) {
+    cartSummaryHTMl = `
+      <div class="empty-cart">
+        <h2>Looks like your cart is empty!</h2>
+        <img src="images/dog.png" alt="Cute dog" class="empty-cart-image">
+        <button class="add-products-button button-primary js-add-products">Add Products</button>
+      </div>
+    `;
+
+    document.querySelector('.js-order-summary').innerHTML = cartSummaryHTMl;
+
+    document.querySelector('.js-add-products').addEventListener('click', () => {
+      window.location.href = 'amazon.html'; // Change this to your product page
+    });
+
+    return;
+  }
+
+  // Existing cart rendering logic when cart has items
+
+
   cart.cartItems.forEach((cartItem) => {
     const productId = cartItem.productId;//get productID of each cart-Item(stored in cart)
 
