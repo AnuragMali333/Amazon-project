@@ -2,7 +2,7 @@ import {getProduct, loadProductsFetch} from '../data/products.js';
 import {orders} from '../data/orders.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import formatCurrency from './utils/money.js';
-import {cart} from '../data/cart-oop.js';
+import {cart} from '../data/cart-class.js';
 
 async function loadPage() {
   await loadProductsFetch();
@@ -101,6 +101,8 @@ async function loadPage() {
       }, 1000);
     });
   });
+
+  document.querySelector('.js-cart-quantity').innerHTML=cart.calculateCartQuantity();
 }
 
 loadPage();
