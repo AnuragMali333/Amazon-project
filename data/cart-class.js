@@ -136,6 +136,10 @@ class Cart{
     this.saveToStorage();
   }
 
+  resetCart(){
+    this.cartItems = [];
+    this.saveToStorage();
+  }
 
 }
 
