@@ -1,15 +1,24 @@
-import {getProduct, loadProductsFetch} from '../data/products.js';
-import {orders} from '../data/orders.js';
+import { getProduct, loadProductsFetch } from '../data/products.js';
+import { orders } from '../data/orders.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import formatCurrency from './utils/money.js';
-import {cart} from '../data/cart-class.js';
+import { cart } from '../data/cart-class.js';
 
 async function loadPage() {
   await loadProductsFetch();
+  console.log('Products loaded');
+  console.log(orders); // Check if orders exist after loading products
+
 
   let ordersHTML = '';
 
   orders.forEach((order) => {
+    console.log("Processing order:",order); // Check if orders exist
+     // If order has no products, skip it
+  if (!order.products || !Array.isArray(order.products) || order.products.length === 0) {
+    console.warn("Skipping empty order:", order);
+    return;
+  }
     const orderTimeString = dayjs(order.orderTime).format('MMMM D');
 
     ordersHTML += `
@@ -55,9 +64,8 @@ async function loadPage() {
             ${product.name}
           </div>
           <div class="product-delivery-date">
-            Arriving on: ${
-              dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')
-            }
+            Arriving on: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')
+        }
           </div>
           <div class="product-quantity">
             Quantity: ${productDetails.quantity}
@@ -88,7 +96,7 @@ async function loadPage() {
     button.addEventListener('click', () => {
       console.log('Buy Again Clicked:', button.dataset.productId);
       cart.addToCart(button.dataset.productId);
-  
+
 
       // (Optional) display a message that the product was added,
       // then change it back after a second.
@@ -99,10 +107,11 @@ async function loadPage() {
           <span class="buy-again-message">Buy it again</span>
         `;
       }, 1000);
+      document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
     });
   });
 
-  document.querySelector('.js-cart-quantity').innerHTML=cart.calculateCartQuantity();
+  document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
 }
 
 loadPage();
