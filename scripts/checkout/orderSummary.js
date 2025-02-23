@@ -22,7 +22,7 @@ export function renderOrderSummary() {
     document.querySelector('.js-order-summary').innerHTML = cartSummaryHTMl;
 
     document.querySelector('.js-add-products').addEventListener('click', () => {
-      window.location.href = 'amazon.html'; // Change this to your product page
+      window.location.href = 'index.html'; // Change this to your product page
     });
 
     return;
