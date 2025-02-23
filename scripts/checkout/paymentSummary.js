@@ -60,6 +60,10 @@ export function renderPaymentSummary() {
 
   document.querySelector('.js-place-order')
     .addEventListener('click',async()=>{
+      if (cart.calculateCartQuantity() === 0) {
+        alert('Your cart is empty. Add products before placing an order.');
+        return; // Stop the function execution
+      }
       try{
         const response=await fetch('https://supersimplebackend.dev/orders',{
           method:'POST',
