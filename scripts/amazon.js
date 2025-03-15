@@ -7,8 +7,8 @@ loadProducts(renderProductsGrid);
 function renderProductsGrid() {
   let productsHTML = '';
 
-  const url = new URL(window.location.href);
-  const search = url.searchParams.get('search');
+  const url = new URL(window.location.href);// Create a URL object from the current page URL
+  const search = url.searchParams.get('search');// Retrieve the value of the 'search' query parameter from the URL
 
   let filteredProducts = products;
 

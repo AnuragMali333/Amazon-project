@@ -21,13 +21,8 @@ class Cart{
 
   addToCart(productId) {
 
-    let matchingItem;
-  
-    this.cartItems.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
-      if (productId === cartItem.productId) {
-        matchingItem = cartItem;
-      }
-    });
+    const matchingItem = this.cartItems.find(cartItem => cartItem.productId === productId);
+
   
     const quantitySelector = document.querySelector(
       `.js-quantity-selector-${productId}`
@@ -77,30 +72,21 @@ class Cart{
   }
 
   removeFromCart(productId) {
-    const newCart = [];
-  
-    this.cartItems.forEach((cartItem) => {
-      if (cartItem.productId !== productId) {// All other products with different productID than the one which is to be removed will get added to new cart
-        newCart.push(cartItem);
-      }
-    });
-  
-    this.cartItems = newCart;
+    this.cartItems = this.cartItems.filter(cartItem => cartItem.productId !== productId);
+    
     this.saveToStorage();
   }
 
   updateDeliveryOption(productId, newdeliveryOptionId) {
-    let matchingItem;
-  
-    this.cartItems.forEach((cartItem) => { //Iterates over the cart and checks if product is already present in cart
-      if (productId === cartItem.productId) {
-        matchingItem = cartItem;
-      }
-    });
-  
+    const matchingItem = this.cartItems.find(cartItem => cartItem.productId === productId);
+
+    if (matchingItem){
     matchingItem.deliveryOptionId = newdeliveryOptionId;
-  
     this.saveToStorage();
+    }
+    else{
+      console.warn(`Product ${productId} not found in cart.`)
+    }
   }
 
   calculateCartQuantity() {//sums up all quantities in the cart.
@@ -115,17 +101,15 @@ class Cart{
 
   updateQuantity(productId, newQuantity) {//updates the quantity of a specific product in the cart.
   
-    let matchingItem;
-  
-    this.cartItems.forEach((cartItem) => {
-      if (productId === cartItem.productId) {
-        matchingItem = cartItem;
-      }
-    });
-  
-    matchingItem.quantity = newQuantity;
-  
-    this.saveToStorage();
+    const matchingItem = this.cartItems.find(cartItem => cartItem.productId === productId);
+    
+    if (matchingItem) {
+      matchingItem.quantity = newQuantity;
+      this.saveToStorage();
+    } 
+    else {
+      console.warn(`Product ${productId} not found in cart.`);
+    }    
   }
 
   resetCart(){
