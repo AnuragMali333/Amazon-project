@@ -1,15 +1,8 @@
 import { formatCurrency } from '../scripts/utils/money.js';
 export function getProduct(productId) {
-  let matchingProduct;
-
-  products.forEach((product) => { // locates the cartItem in products array to get detailed data of product
-    if (product.id === productId) {
-      matchingProduct = product;
-    }
-  });
-
-  return matchingProduct;
+  return products.find(product => product.id === productId);
 }
+
 
 class Product { //Creates product objects with its properties and methods
   id;
@@ -109,27 +102,29 @@ object3.method();
 export let products = [];
 
 export function loadProductsFetch() {
-  const promise = fetch(
-    'https://supersimplebackend.dev/products').then((response) => {
-      return response.json();//returns a promise(is asynchronous)
-    }).then((productsData) => {
-      products = productsData.map((productDetails) => {
-        if (productDetails.type === 'clothing') {
-          return new Clothing(productDetails);
+  return fetch('https://supersimplebackend.dev/products')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(productsData => {
+      products = productsData.map(productDetails => {
+        switch (productDetails.type) {
+          case 'clothing': return new Clothing(productDetails);
+          case 'appliance': return new Appliance(productDetails);
+          default: return new Product(productDetails);
         }
-        else if (productDetails.type === 'appliance') {
-          return new Appliance(productDetails);
-        }
-        return new Product(productDetails);
       });
 
-      console.log('load products');
-    }).catch(()=>{
-      console.log('unexpected error.Please try again later');
+      console.log('Products loaded successfully');
+    })
+    .catch(error => {
+      console.error('Failed to load products:', error);
     });
-
-    return promise;
 }
+
 /*
 loadProductsFetch().then(()=>{
   console.log('next step');
