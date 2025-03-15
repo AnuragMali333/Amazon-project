@@ -14,45 +14,30 @@ export const deliveryOptions=[{
   priceCents:999
  }];
 
- export function getDeliveryOption(deliveryOptionId){
-  let deliveryOption;
+export function getDeliveryOption(deliveryOptionId) {
+  return deliveryOptions.find(option => option.id === deliveryOptionId) || deliveryOptions[0];
+}
 
-  deliveryOptions.forEach((option)=>{
-    if(option.id===deliveryOptionId){
-      deliveryOption=option;
-    }
-  });
-
-  return deliveryOption|| deliveryOptions[0];
- }
  /* Retrieves a delivery option based on the provided delivery option ID.
     If the specified ID is not found, it defaults to the first delivery option.
  */
 
 export function calculateDeliveryDate(deliveryOption) {
-  let today = dayjs();  // Start with today's date
-  let daysRequired = deliveryOption.deliveryDays;
+  let estimatedDate = dayjs();// Start with today's date
+  let daysLeft = deliveryOption.deliveryDays;
 
-  while (daysRequired > 0) {
-    today = today.add(1, 'day');  // Increment the date
-
-    if (isWeekend(today)) {
-      continue;  // Skip decrementing if it's a weekend
-    } else {
-      daysRequired--;  // Only decrement if it's a weekday
+  while (daysLeft > 0) {
+    estimatedDate = estimatedDate.add(1, 'day');// Increment the date
+    if (!isWeekend(estimatedDate)) {//Decrement only if it's not weekend
+      daysLeft--;
     }
   }
 
-  const deliveryDate = today;
-  const dateString = deliveryDate.format('dddd, MMMM D');
-
-  return dateString;
+  return estimatedDate.format('dddd, MMMM D');
 }
-
+    
 
   
 function isWeekend(date){
-  const dayofWeek=date.format('dddd');
-
-  return dayofWeek === 'Saturday' || dayofWeek ==='Sunday';
+  return date.day() === 0 || date.day() === 6;
 }
