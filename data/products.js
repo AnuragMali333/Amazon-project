@@ -1,5 +1,5 @@
 import { formatCurrency } from '../scripts/utils/money.js';
-export function getProduct(productId) {
+export function getProduct(productId) {// Finds matching product from products array using productId
   return products.find(product => product.id === productId);
 }
 

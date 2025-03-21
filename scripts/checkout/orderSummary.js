@@ -89,7 +89,7 @@ export function renderOrderSummary() {
     `;
   });
 
-  function deliveryOptionsHTML(matchingProduct, cartItem) {// Generate HTML of delivery options(three) for each cart-Item 
+  function deliveryOptionsHTML(matchingProduct, cartItem) {// Generates HTML of delivery options(three) for each cart-Item 
     let html = ''
     deliveryOptions.forEach((deliveryOption) => {
       const dateString = calculateDeliveryDate(deliveryOption);
@@ -97,7 +97,7 @@ export function renderOrderSummary() {
         ? 'FREE'
         : `$${formatCurrency(deliveryOption.priceCents)} -`;
 
-      const isChecked = deliveryOption.id === cartItem.deliveryOptionId;// returns true if deliveryOptionId in cart matches id of delivery option
+      const isChecked = (deliveryOption.id === cartItem.deliveryOptionId);// returns true if deliveryOptionId in cart matches id of delivery option
 
       html += `
       <div class="delivery-option js-delivery-option"
@@ -153,7 +153,7 @@ export function renderOrderSummary() {
         const container = document.querySelector(
           `.js-cart-item-container-${productId}`
         );
-        container.classList.add('is-editing-quantity');
+        container.classList.add('is-editing-quantity');// makes input and save link visible 
       })
     });
 
@@ -179,7 +179,7 @@ export function renderOrderSummary() {
 
         const newQuantity = Number(quantityInput.value);
         if (newQuantity < 0 || newQuantity >= 1000) {
-          alert('Quantity must be at least 0 and less than 1000');
+          alert('Quantity must be at least 1 and less than 1000');
           return;
         }
 
