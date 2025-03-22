@@ -1,8 +1,8 @@
-import {cart} from '../../data/cart-class.js';
+import { cart } from '../../data/cart-class.js';
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
-import { formatCurrency} from'../utils/money.js';
-import {addOrder} from '../../data/orders.js';
+import { formatCurrency } from '../utils/money.js';
+import { addOrder } from '../../data/orders.js';
 
 export function renderPaymentSummary() {
   let productPriceCents = 0;// To track total price of all items in cart
@@ -15,7 +15,7 @@ export function renderPaymentSummary() {
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
     shippingPriceCents += deliveryOption.priceCents
   });
-  let cartQuantity=cart.calculateCartQuantity();
+  let cartQuantity = cart.calculateCartQuantity();
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;// Total of all products before tax
   const taxCents = totalBeforeTaxCents * 0.1;
   const totalCents = totalBeforeTaxCents + taxCents;// total of all products including tax
@@ -55,34 +55,44 @@ export function renderPaymentSummary() {
           </button>
   `;
 
-  document.querySelector('.js-payment-summary')// injects generated HTML into payment summary
-  .innerHTML=paymentSummaryHTML;
-
-  document.querySelector('.js-place-order')
-    .addEventListener('click',async()=>{
+  const paymentSummaryEl = document.querySelector('.js-payment-summary');
+  if (paymentSummaryEl) {
+    paymentSummaryEl.innerHTML = paymentSummaryHTML;
+  }
+  else {
+    console.error('Error: .js-payment-summary element not found.');
+  }
+  const placeOrderButton = document.querySelector('.js-place-order');
+  if (placeOrderButton) {
+    placeOrderButton.addEventListener('click', async () => {// Add event listener to "Place Order" button
       if (cart.calculateCartQuantity() === 0) {
         alert('Your cart is empty. Add products before placing an order.');
-        return; // Stop the function execution
+        return; // Prevent placing an order if the cart is empty
       }
-      try{
-        const response=await fetch('https://supersimplebackend.dev/orders',{
-          method:'POST',
-          headers:{
-            'Content-Type':'application/json'
+      try {
+         // Send the cart data to the backend to create an order
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
           },
-          body:JSON.stringify({
-            cart:cart
+          body: JSON.stringify({
+            cart: cart // Send cart data as JSON
           })
         });
-        const order=await response.json();
+        
+        const order = await response.json(); // Get the created order from the response
         addOrder(order);
 
-      }catch(error){
+      } catch (error) {
+        alert('Failed to place order. Please check your internet connection and try again.');
         console.log('Unexpected error. Try again later.')
       }
       
+      // Reset the cart after placing the order and redirect to orders page
       cart.resetCart();
-      window.location.href='orders.html';
+      window.location.href = 'orders.html';
     });
-}
+  }
 
+}

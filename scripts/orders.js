@@ -6,22 +6,12 @@ import { cart } from '../data/cart-class.js';
 
 async function loadPage() {
   await loadProductsFetch();
-  console.log('Products loaded');
-  console.log(orders); // Check if orders exist after loading products
+  console.log('Products loaded:', orders);
 
-
-  let ordersHTML = '';
-
-  orders.forEach((order) => {
-    console.log("Processing order:",order); // Check if orders exist
-     // If order has no products, skip it
-  if (!order.products || !Array.isArray(order.products) || order.products.length === 0) {
-    console.warn("Skipping empty order:", order);
-    return;
-  }
+  // Generate orders HTML using map().join('') for performance
+  const ordersHTML = orders.map(order => {
     const orderTimeString = dayjs(order.orderTime).format('MMMM D');
-
-    ordersHTML += `
+    return `
       <div class="order-container">
         <div class="order-header">
           <div class="order-header-left-section">
@@ -34,72 +24,28 @@ async function loadPage() {
               <div>$${formatCurrency(order.totalCostCents)}</div>
             </div>
           </div>
-
           <div class="order-header-right-section">
             <div class="order-header-label">Order ID:</div>
             <div>${order.id}</div>
           </div>
         </div>
-
         <div class="order-details-grid">
           ${productsListHTML(order)}
         </div>
       </div>
     `;
-  });
-
-  function productsListHTML(order) {
-    let productsListHTML = '';
-
-    order.products.forEach((productDetails) => {
-      const product = getProduct(productDetails.productId);
-
-      productsListHTML += `
-        <div class="product-image-container">
-          <img src="${product.image}">
-        </div>
-
-        <div class="product-details">
-          <div class="product-name">
-            ${product.name}
-          </div>
-          <div class="product-delivery-date">
-            Arriving on: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')
-        }
-          </div>
-          <div class="product-quantity">
-            Quantity: ${productDetails.quantity}
-          </div>
-          <button class="buy-again-button button-primary js-buy-again"
-            data-product-id="${product.id}">
-            <img class="buy-again-icon" src="images/icons/buy-again.png">
-            <span class="buy-again-message">Buy it again</span>
-          </button>
-        </div>
-
-        <div class="product-actions">
-          <a href="tracking.html?orderId=${order.id}&productId=${product.id}">
-            <button class="track-package-button button-secondary">
-              Track package
-            </button>
-          </a>
-        </div>
-      `;
-    });
-
-    return productsListHTML;
-  }
+  }).join('');
 
   document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
+  document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
 
-  document.querySelectorAll('.js-buy-again').forEach((button) => {
+  // Add event listeners to "Buy Again" buttons
+  document.querySelectorAll('.js-buy-again').forEach(button => {
     button.addEventListener('click', () => {
       console.log('Buy Again Clicked:', button.dataset.productId);
       cart.addToCart(button.dataset.productId);
 
-
-      // (Optional) display a message that the product was added,
-      // then change it back after a second.
+      // Display a message that the product was added, then revert
       button.innerHTML = 'Added';
       setTimeout(() => {
         button.innerHTML = `
@@ -110,8 +56,38 @@ async function loadPage() {
       document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
     });
   });
+}
 
-  document.querySelector('.js-cart-quantity').innerHTML = cart.calculateCartQuantity();
+function productsListHTML(order) {
+  return order.products.map(productDetails => {
+    const product = getProduct(productDetails.productId);
+    return `
+      <div class="product-image-container">
+        <img src="${product.image}">
+      </div>
+
+      <div class="product-details">
+        <div class="product-name">${product.name}</div>
+        <div class="product-delivery-date">
+          Arriving on: ${dayjs(productDetails.estimatedDeliveryTime).format('MMMM D')}
+        </div>
+        <div class="product-quantity">Quantity: ${productDetails.quantity}</div>
+        <button class="buy-again-button button-primary js-buy-again"
+          data-product-id="${product.id}">
+          <img class="buy-again-icon" src="images/icons/buy-again.png">
+          <span class="buy-again-message">Buy it again</span>
+        </button>
+      </div>
+
+      <div class="product-actions">
+        <a href="tracking.html?orderId=${order.id}&productId=${product.id}">
+          <button class="track-package-button button-secondary">
+            Track package
+          </button>
+        </a>
+      </div>
+    `;
+  }).join('');
 }
 
 loadPage();

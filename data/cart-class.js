@@ -122,8 +122,3 @@ class Cart{
 
 export const cart=new Cart('cart-oop');
 const buisnessCart=new Cart('cart-buisness');
-
-
-console.log(cart);
-console.log(buisnessCart);
-console.log(buisnessCart instanceof Cart);
